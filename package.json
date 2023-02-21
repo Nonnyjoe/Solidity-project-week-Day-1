@@ -1,7 +1,7 @@
 {
   "name": "solidity-project-week-day-1",
   "version": "1.0.0",
-  "description": "A solidity smart contract to generate a random number using Chainlink VRF Oracle",
+  "description": "A solidity smart contract to generate a random number using Chainlink VRF Oracle..... contract <0x5BA111f706F05F6188B6f1466DfE9d31CB5061F2>",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
