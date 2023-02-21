@@ -15,6 +15,7 @@ contract RandomNumberGenerator is VRFV2WrapperConsumerBase {
     uint32 internal numWords = 1;
     uint16 internal requestConfirmations = 3;
     uint256 internal RoundDown = 1e76;
+    uint256 internal myRequestId;
     mapping (uint256 => uint256) internal requestIdToFee;
     mapping (uint256 => uint256) internal requestIdToRandomWord;
     mapping (uint256 => bool) internal requestIdToStatus;
@@ -28,8 +29,9 @@ contract RandomNumberGenerator is VRFV2WrapperConsumerBase {
     function getRandomNumber() public returns ( uint256) {
         uint256 requestId = requestRandomness(fee, requestConfirmations, numWords);
         requestIdToFee[requestId] = VRF_V2_WRAPPER.calculateRequestPrice(fee);
-        emit RandomNumberRequest(requestId);
         addressToId[msg.sender] = requestId;
+        myRequestId = requestId;
+        emit RandomNumberRequest(requestId);
         return requestId;
     }
 
@@ -55,9 +57,14 @@ contract RandomNumberGenerator is VRFV2WrapperConsumerBase {
         return linkToken.balanceOf(address(this));
     }
 
-    function getLastRequestID() public view returns(uint256){
+    function getMyRequestID() public view returns(uint256){
         return addressToId[msg.sender];
     }
+
+    function getLastId() public view returns(uint256){
+        return myRequestId;
+    }
+
 
     function WithdrawLink(uint256 _amount) public {
         require(msg.sender == admin, "Not Admin");
